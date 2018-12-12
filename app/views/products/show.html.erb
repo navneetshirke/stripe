@@ -1,0 +1,36 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Product name:</strong>
+  <%= @product.product_name %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @product.price %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @product.email %>
+</p>
+
+<%#= render 'charges/stripe' %>
+<%= form_tag charges_path do %>
+  <article>
+      <label class="amount">
+      <span>Amount: <%= hidden_field_tag(:amount, @product.price ) %></span>
+      <span>Amount: <%= hidden_field_tag(:description, @product.product_name ) %></span>
+      </label>
+  </article>
+
+  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+          data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+          data-description=  <%= @product.product_name %>
+          data-amount=<%= @product.price %>
+          data-locale="auto"></script>
+<% end %>
+
+
+<%= link_to 'Edit', edit_product_path(@product) %> |
+<%= link_to 'Back', products_path %>
